@@ -1,0 +1,44 @@
+
+server:
+  servlet:
+    context-path: "/api/v1"
+  port: 8091
+
+spring:
+  webflux:
+    base-path: /api/v1
+  jackson:
+    default-property-inclusion: NON_EMPTY
+    visibility:
+      field: any
+      getter: none
+      setter: none
+      is-getter: none
+    deserialization:
+      fail-on-ignored-properties: false
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: "https://lemur-6.cloud-iam.com/auth/realms/akapoor-iam/protocol/openid-connect/certs"
+
+  data:
+    mongodb:
+      auto-index-creation: true
+      database: inventorydb
+      host: localhost
+      port: 30001
+      username: api_user_inventory
+      password: api123
+      replicaSetName: rs0
+management:
+  tracing:
+    baggage:
+      correlation:
+        fields: correlationId
+
+
+
+#logging.pattern.level: '%d{yyyy-MM-dd HH:mm:ss} cid:%X{correlationId} [%thread] %-5level %logger{36} - %msg%n'
+#  [cid %X{correlationId}] %5p [testcid]

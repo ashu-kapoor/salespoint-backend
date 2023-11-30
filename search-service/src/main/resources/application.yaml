@@ -1,0 +1,39 @@
+
+server:
+  servlet:
+    context-path: "/api/v1"
+  port: 8094
+
+spring:
+  webflux:
+    base-path: /api/v1
+  jackson:
+    default-property-inclusion: NON_EMPTY
+    visibility:
+      field: any
+      getter: none
+      setter: none
+      is-getter: none
+    deserialization:
+      fail-on-ignored-properties: false
+  elasticsearch:
+    uris: http://localhost:9500
+
+  data:
+    elasticsearch:
+      client:
+        reactive:
+          endpoints: ${ELASTIC_ADDRESS:localhost}:${ELASTIC_PORT:9500}
+
+
+#logging:
+ # level:
+  #  tracer: TRACE
+
+management:
+  tracing:
+    baggage:
+      correlation:
+        fields: correlationId
+
+

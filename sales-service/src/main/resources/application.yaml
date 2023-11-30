@@ -1,0 +1,43 @@
+
+server:
+  servlet:
+    context-path: "/api/v1"
+  port: 8092
+
+spring:
+  webflux:
+    base-path: /api/v1
+  jackson:
+    default-property-inclusion: NON_EMPTY
+    visibility:
+      field: any
+      getter: none
+      setter: none
+      is-getter: none
+    deserialization:
+      fail-on-ignored-properties: false
+  kafka:
+    consumer:
+      bootstrap-servers:
+        - localhost:9092
+      group-id: inventory-service
+
+  data:
+    mongodb:
+      auto-index-creation: true
+      database: salesdb
+      host: localhost
+      port: 30001
+      username: api_user_sales
+      password: api123
+      replicaSetName: rs0
+
+
+
+management:
+  tracing:
+    baggage:
+      correlation:
+        fields: correlationId
+
+

@@ -1,0 +1,227 @@
+openapi: 3.0.3
+info:
+  title: Inventory Service - OpenAPI 3.0
+  description: |-
+    This is a Inventory Service
+
+  contact:
+    email: ashutoshkapoor1234@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+servers:
+  - url: http://localhost/
+tags:
+  - name: inventory
+    description: Everything about your inventory
+paths:
+  /inventory/items/{itemId}:
+    get:
+      tags:
+        - inventory
+      summary: Find inventory by ID
+      description: Returns a single inventory item
+      operationId: getInventoryById
+      parameters:
+        - name: itemId
+          in: path
+          description: ID of inventory to return
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateInventoryResponse'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: inventory not found
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+    put:
+      tags:
+        - inventory
+      summary: Update the Inventory item
+      description: update a Inventory item
+      operationId: updateinventory
+      parameters:
+        - name: itemId
+          in: path
+          description: ID of inventory
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Update body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateInventoryRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateInventoryResponse'
+        '404':
+          description: inventory not found
+        '405':
+          description: Invalid input
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+    delete:
+      tags:
+        - inventory
+      summary: Delete the inventory by Id
+      description: Delete inventory for given Id
+      operationId: deleteinventory
+      parameters:
+        - name: itemId
+          in: path
+          description: ID of inventory to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Successful operation
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /inventories:
+    post:
+      tags:
+        - inventory
+      summary: Add a new inventory
+      description: Add a new inventory
+      operationId: createinventory
+      requestBody:
+        description: Create inventory body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateInventoryRequest'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateInventoryResponse'
+        '405':
+          description: Invalid input
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+    get:
+      tags:
+        - inventory
+      summary: Get all inventories
+      description: Get all inventories
+      operationId: getinventories
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetinventoriesResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+    delete:
+      tags:
+        - inventory
+      summary: Delete all inventories
+      description: Delete all inventories
+      operationId: deletetinventories
+      responses:
+        '204':
+          description: successful operation
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+
+
+components:
+  schemas:
+    GetinventoriesResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/CreateInventoryResponse'
+    CreateInventoryRequest:
+      type: object
+      required:
+        - quantity
+        - productName
+        - price
+      properties:
+        quantity:
+          type: integer
+          format: int32
+          example: 12
+        productName:
+          type: string
+          example: PartName
+        price:
+          type: number
+          example: 22.40
+    CreateInventoryResponse:
+      type: object
+      required:
+        - quantity
+        - productName
+        - price
+        - id
+      properties:
+        id:
+          type: string
+        quantity:
+          type: integer
+          example: 12
+          format: int32
+        productName:
+          type: string
+          example: PartName
+        price:
+          type: number
+          example: 22.40
+
+    ApiResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        type:
+          type: string
+        message:
+          type: string

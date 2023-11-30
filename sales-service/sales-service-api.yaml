@@ -1,0 +1,188 @@
+openapi: 3.0.3
+info:
+  title: Sales Service - OpenAPI 3.0
+  description: |-
+    This is a Sales Service
+
+  contact:
+    email: ashutoshkapoor1234@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+servers:
+  - url: http://localhost/
+tags:
+  - name: sales
+    description: Everything about your sales
+paths:
+  /sales/{itemId}:
+    get:
+      tags:
+        - sales
+      summary: Find sales by ID
+      description: Returns a single sales item
+      operationId: getSalesById
+      parameters:
+        - name: itemId
+          in: path
+          description: ID of sales to return
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSalesResponse'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: sales not found
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /sales/{itemId}/cancel:
+    post:
+      tags:
+        - sales
+      summary: Cancel the Sales item
+      description: Calcel a Sales item
+      operationId: cancelSales
+      parameters:
+        - name: itemId
+          in: path
+          description: ID of sales
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateSalesResponse'
+        '400':
+          description: Order in progress cant be cancelled
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '404':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /sales:
+    post:
+      tags:
+        - sales
+      summary: Add a new sales
+      description: Add a new sales
+      operationId: createSales
+      requestBody:
+        description: Create sales body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSalesRequest'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateSalesResponse'
+        '405':
+          description: Invalid input
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+
+
+components:
+  schemas:
+    GetSalesResponse:
+      type: object
+      required:
+        - quantity
+        - productId
+        - customerId
+        - id
+        - status
+        - amount
+      properties:
+        quantity:
+          type: integer
+          format: int32
+          example: 12
+        productId:
+          type: string
+        customerId:
+          type: string
+        id:
+          type: string
+        status:
+          type: string
+          example: PENDING
+        amount:
+          type: number
+          example: 22.40
+    CreateSalesRequest:
+      type: object
+      required:
+        - quantity
+        - productId
+        - customerId
+        - amount
+      properties:
+        quantity:
+          type: integer
+          format: int32
+          example: 12
+        productId:
+          type: string
+        customerId:
+          type: string
+        amount:
+          type: number
+          example: 22.40
+    CreateSalesResponse:
+      type: object
+      required:
+        - id
+        - status
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+          example: PENDING
+
+    ApiResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        type:
+          type: string
+        message:
+          type: string
