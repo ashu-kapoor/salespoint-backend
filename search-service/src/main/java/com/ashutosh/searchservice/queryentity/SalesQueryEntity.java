@@ -27,7 +27,7 @@ public class SalesQueryEntity {
   @Field(type = FieldType.Text)
   private String productId;
 
-  @Field(type = FieldType.Text, analyzer = "edge_ngram_analyzer")
+  @Field(type = FieldType.Text, analyzer="autocomplete", searchAnalyzer = "search_autocomplete")
   private String status;
 
   @Field(type = FieldType.Float)

@@ -20,7 +20,7 @@ public class InventoryQueryEntity {
   @Field(type = FieldType.Integer)
   private Integer quantity;
 
-  @Field(type = FieldType.Text, analyzer = "edge_ngram_analyzer")
+  @Field(type = FieldType.Text, analyzer="autocomplete", searchAnalyzer = "search_autocomplete")
   private String productName;
 
   @Field(type = FieldType.Float)

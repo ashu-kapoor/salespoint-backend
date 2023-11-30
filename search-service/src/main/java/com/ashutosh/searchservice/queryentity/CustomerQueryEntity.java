@@ -17,15 +17,15 @@ public class CustomerQueryEntity {
   @Field(type = FieldType.Keyword)
   private String id;
 
-  @Field(type = FieldType.Text, analyzer = "edge_ngram_analyzer")
+  @Field(type = FieldType.Text, analyzer="autocomplete",  searchAnalyzer = "search_autocomplete")
   private String firstName;
 
-  @Field(type = FieldType.Text, analyzer = "edge_ngram_analyzer")
+  @Field(type = FieldType.Text, analyzer="autocomplete", searchAnalyzer = "search_autocomplete")
   private String lastName;
 
   @Field(type = FieldType.Float)
   private BigDecimal amount;
 
-  @Field(type = FieldType.Text, analyzer = "edge_ngram_analyzer")
+  @Field(type = FieldType.Text, analyzer="autocomplete", searchAnalyzer = "search_autocomplete")
   private String email;
 }
